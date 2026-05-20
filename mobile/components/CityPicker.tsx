@@ -9,15 +9,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { CITY_DATA, City } from "../data/cities";
-
-const COLORS = {
-  bg: "#16213e",
-  card: "#1a1a2e",
-  accent: "#e94560",
-  blue: "#0f3460",
-  text: "#eee",
-  sub: "#8888aa",
-};
+import { COLORS, SIZES, FONTS } from "../constants/theme";
 
 interface Props {
   visible: boolean;
@@ -57,7 +49,7 @@ export default function CityPicker({ visible, onSelect, onClose }: Props) {
               <Text style={styles.closeBtn}>取消</Text>
             </TouchableOpacity>
             <Text style={styles.title}>
-              {selectedProvince ? `选择城市` : `选择省份`}
+              {selectedProvince ? "选择城市" : "选择省份"}
             </Text>
             <View style={{ width: 50 }} />
           </View>
@@ -81,7 +73,6 @@ export default function CityPicker({ visible, onSelect, onClose }: Props) {
             }
             renderItem={({ item }) => {
               if (typeof item === "string") {
-                // 省份列表
                 return (
                   <TouchableOpacity
                     style={styles.item}
@@ -92,7 +83,6 @@ export default function CityPicker({ visible, onSelect, onClose }: Props) {
                   </TouchableOpacity>
                 );
               }
-              // 城市列表
               return (
                 <TouchableOpacity
                   style={styles.item}
@@ -118,59 +108,59 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: COLORS.bg,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: SIZES.radiusLarge,
+    borderTopRightRadius: SIZES.radiusLarge,
     maxHeight: "80%",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#2a2a4e",
+    padding: SIZES.md,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.cardLight,
   },
   title: {
-    fontSize: 17,
-    fontWeight: "600",
+    fontSize: SIZES.subtitle,
+    ...FONTS.semibold,
     color: COLORS.text,
   },
   closeBtn: {
-    fontSize: 16,
-    color: COLORS.sub,
+    fontSize: SIZES.body,
+    color: COLORS.textSecondary,
     width: 50,
   },
   breadcrumb: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 12,
-    paddingHorizontal: 16,
+    padding: SIZES.sm + 4,
+    paddingHorizontal: SIZES.md,
     backgroundColor: COLORS.card,
-    gap: 8,
+    gap: SIZES.sm,
   },
   breadcrumbText: {
-    fontSize: 14,
-    color: COLORS.accent,
+    fontSize: SIZES.body,
+    color: COLORS.mint,
   },
   breadcrumbProvince: {
-    fontSize: 14,
-    color: COLORS.sub,
+    fontSize: SIZES.body,
+    color: COLORS.textSecondary,
   },
   item: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#1a1a3e",
+    padding: SIZES.md,
+    paddingHorizontal: SIZES.lg,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLORS.cardLight,
   },
   itemText: {
-    fontSize: 16,
+    fontSize: SIZES.body,
     color: COLORS.text,
   },
   arrow: {
     fontSize: 20,
-    color: COLORS.sub,
+    color: COLORS.textMuted,
   },
 });

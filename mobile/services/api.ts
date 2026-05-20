@@ -116,3 +116,73 @@ export const getSleepAdvice = async (
   const res = await api.get("/sleep-advice/", { params: { lat, lon } });
   return res.data;
 };
+
+// --- AI API ---
+
+export interface AIAnalysis {
+  analysis: string;
+  record_count: number;
+  avg_duration: number;
+  avg_quality: number;
+}
+
+export interface AIMeditation {
+  text: string;
+  audio_url: string;
+}
+
+export const postAIAnalyze = async (
+  records: SleepRecord[]
+): Promise<AIAnalysis> => {
+  const res = await api.post("/ai/analyze", {
+    records: records.map((r) => ({
+      date: r.date,
+      duration_minutes: r.duration_minutes,
+      quality: r.quality,
+    })),
+  });
+  return res.data;
+};
+
+export const postAIChat = async (
+  message: string,
+  history?: { role: string; content: string }[],
+  sleepContext?: string
+): Promise<{ reply: string }> => {
+  const res = await api.post("/ai/chat", {
+    message,
+    history,
+    sleep_context: sleepContext,
+  });
+  return res.data;
+};
+
+export const postAIMeditation = async (
+  theme?: string
+): Promise<AIMeditation> => {
+  const res = await api.post("/ai/meditation", { theme });
+  return res.data;
+};
+
+export const getAIMeditationText = async (
+  theme?: string
+): Promise<{ text: string }> => {
+  const res = await api.get("/ai/meditation/text", {
+    params: { theme: theme || "通用助眠" },
+  });
+  return res.data;
+};
+
+// --- 故事 API ---
+
+export const getStoryThemes = async (): Promise<{ themes: string[] }> => {
+  const res = await api.get("/ai/story/themes");
+  return res.data;
+};
+
+export const postAIStory = async (
+  theme?: string
+): Promise<{ id: number; name: string; audio_url: string; duration_seconds: number }> => {
+  const res = await api.post("/ai/story", { theme });
+  return res.data;
+};

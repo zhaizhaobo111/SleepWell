@@ -1,19 +1,13 @@
 import { Tabs } from "expo-router";
 import { Text } from "react-native";
-
-const COLORS = {
-  bg: "#1a1a2e",
-  active: "#e94560",
-  inactive: "#8888aa",
-};
+import { COLORS } from "../../constants/theme";
 
 function TabIcon({ name, focused }: { name: string; focused: boolean }) {
   const icons: Record<string, string> = {
-    index: "🏠",
-    record: "📝",
-    stats: "📊",
-    tips: "💡",
+    index: "🌙",
     sounds: "🎵",
+    assistant: "🤖",
+    profile: "👤",
   };
   return (
     <Text style={{ fontSize: 22, opacity: focused ? 1 : 0.5 }}>
@@ -26,16 +20,16 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerStyle: { backgroundColor: COLORS.bg },
-        headerTintColor: "#fff",
+        headerShown: false,
         tabBarStyle: {
           backgroundColor: COLORS.bg,
-          borderTopColor: "#2a2a4e",
+          borderTopColor: COLORS.cardLight,
+          borderTopWidth: 0.5,
           height: 60,
           paddingBottom: 8,
         },
-        tabBarActiveTintColor: COLORS.active,
-        tabBarInactiveTintColor: COLORS.inactive,
+        tabBarActiveTintColor: COLORS.mint,
+        tabBarInactiveTintColor: COLORS.textMuted,
       }}
     >
       <Tabs.Screen
@@ -46,33 +40,30 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="record"
-        options={{
-          title: "记录",
-          tabBarIcon: ({ focused }) => <TabIcon name="record" focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="stats"
-        options={{
-          title: "统计",
-          tabBarIcon: ({ focused }) => <TabIcon name="stats" focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="tips"
-        options={{
-          title: "建议",
-          tabBarIcon: ({ focused }) => <TabIcon name="tips" focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
         name="sounds"
         options={{
-          title: "音频",
+          title: "助眠库",
           tabBarIcon: ({ focused }) => <TabIcon name="sounds" focused={focused} />,
         }}
       />
+      <Tabs.Screen
+        name="assistant"
+        options={{
+          title: "睡眠助手",
+          tabBarIcon: ({ focused }) => <TabIcon name="assistant" focused={focused} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "个人中心",
+          tabBarIcon: ({ focused }) => <TabIcon name="profile" focused={focused} />,
+        }}
+      />
+      {/* 隐藏旧路由 */}
+      <Tabs.Screen name="record" options={{ href: null }} />
+      <Tabs.Screen name="stats" options={{ href: null }} />
+      <Tabs.Screen name="tips" options={{ href: null }} />
     </Tabs>
   );
 }

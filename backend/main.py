@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from database import engine, SessionLocal, Base
 from models import SleepRecord, SleepTip, SleepSound  # noqa: F401
 from seed_data import seed_db
-from routers import sleep_records, sleep_tips, sleep_sounds, sleep_advice
+from routers import sleep_records, sleep_tips, sleep_sounds, sleep_advice, ai
 
 
 @asynccontextmanager
@@ -16,6 +16,16 @@ async def lifespan(app: FastAPI):
     db = SessionLocal()
     seed_db(db)
     db.close()
+    # 异步生成助眠故事（不阻塞启动）
+    import asyncio
+    from services.ai import seed_stories
+    async def _seed():
+        d = SessionLocal()
+        try:
+            await seed_stories(d)
+        finally:
+            d.close()
+    asyncio.create_task(_seed())
     yield
 
 
@@ -33,6 +43,7 @@ app.include_router(sleep_records.router)
 app.include_router(sleep_tips.router)
 app.include_router(sleep_sounds.router)
 app.include_router(sleep_advice.router)
+app.include_router(ai.router)
 
 
 sounds_dir = os.path.join(os.path.dirname(__file__), "sounds")
